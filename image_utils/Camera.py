@@ -10,7 +10,7 @@ def obtener_frame(capturadora: cv.VideoCapture):
         cv.destroyAllWindows()
         exit(0)
 
-    frame = cv.flip(frame, 1)
+    # frame = cv.flip(frame, 1)
     return frame
 
 
@@ -43,18 +43,22 @@ def pintar_borde_cara(frame: np.ndarray):
 
 def get_camera():
     try:
-        return cv.VideoCapture(0, cv.CAP_DSHOW)
+        return cv.VideoCapture(1, cv.CAP_DSHOW)
     except Exception as e:
         print("Error al abrir la camara, intentando con la camara 0")
         try:
-            return cv.VideoCapture(1, cv.CAP_DSHOW)
+            return cv.VideoCapture(0, cv.CAP_DSHOW)
         except Exception as e:
             print("Error al abrir la camara, hay alguna camara conectada?")
             return None
 
 
-def video_capture(operacion=None, operacion_params=None, mouse_callback=None):
-    captura_video = get_camera()
+def video_capture(operacion=None, operacion_params=None, mouse_callback=None, video_path=None):
+    if video_path:
+        captura_video = cv.VideoCapture(video_path)
+    else:
+        captura_video = get_camera()
+
     if captura_video is None:
         return
     cv.namedWindow("Video")
